@@ -1,7 +1,7 @@
-import '../../app.css';
-import Options from "@/entrypoints/options/Options.svelte";
+import "@/app.css";
 import { mount } from "svelte";
+import Options from "@/entrypoints/options/Options.svelte";
 
-mount(Options, {
-  target: document.getElementById('app')!,
-})
+export default defineUnlistedScript(() => {
+    mount(Options, { target: document.getElementById("app")! });
+});

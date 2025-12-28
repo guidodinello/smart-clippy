@@ -1,21 +1,97 @@
 <script lang="ts">
-  import Counter from "@/lib/components/Counter.svelte";
-  const dashboardUrl = browser.runtime.getURL('/dashboard.html')
+    import { TOAST_TYPES } from "@/lib/types/toast";
+    import { TOAST_MESSAGES } from "@/lib/constants";
+    import { getCopyOptions } from "@/lib/storage";
+    import { formatLink, copyToClipboard } from "@/lib/utils/format";
+    import type { PageInfo } from "@/lib/types/format";
+    import Toast from "@/lib/components/Toast.svelte";
+
+    let showSuccessToast = $state(false);
+    let showErrorToast = $state(false);
+    let isLoading = $state(false);
+
+    async function handleCopyClick() {
+        isLoading = true;
+        try {
+            // Get active tab
+            const [activeTab] = await browser.tabs.query({
+                active: true,
+                currentWindow: true,
+            });
+
+            if (!activeTab?.title || !activeTab?.url) {
+                throw new Error("Unable to get tab information");
+            }
+
+            const pageInfo: PageInfo = {
+                title: activeTab.title,
+                url: activeTab.url,
+                // Popup can't access selected text from the page
+            };
+
+            // Get user preferences
+            const options = await getCopyOptions();
+
+            // Format and copy
+            const formattedLink = formatLink(pageInfo, options.copyFormat, options.customFormat);
+            await copyToClipboard(formattedLink);
+
+            showSuccessToast = true;
+        } catch (error) {
+            console.error("Error copying link:", error);
+            showErrorToast = true;
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    function handleOpenOptions() {
+        browser.runtime.openOptionsPage();
+    }
 </script>
 
-<main class="p-4 min-w-[300px] min-h-[300px] grid grid-rows-[auto_1fr] gap-4">
-  <h1 class="text-3xl font-bold">Popup</h1>
-  
-  <!-- Neon Pink (broke) -->
-  <Counter class="bg-neon-pink" />
+<main class="w-72 p-4">
+    <div class="mb-4 flex items-center justify-between">
+        <h1 class="text-lg font-bold">Smart Clippy</h1>
+        <img src="/icons/icon-32.png" alt="Logo" class="size-6" />
+    </div>
 
-  <section class="flex flex-col gap-2">
-    <a href="{dashboardUrl}" target="_blank">Open Dashboard</a>
-  </section>
+    <div class="space-y-2">
+        <button
+            class="w-full rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            onclick={handleCopyClick}
+            disabled={isLoading}
+        >
+            {isLoading ? "Copying..." : "Copy Link"}
+        </button>
 
-  <!-- create a form to submit a message to the background script -->
-  <form class="flex flex-col gap-2">
-    <input type="text" name="message" placeholder="Message" />
-    <button type="submit">Submit</button>
-  </form>
+        <button
+            class="w-full rounded border border-gray-300 bg-white px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            onclick={handleOpenOptions}
+        >
+            Options
+        </button>
+    </div>
+
+    <div class="mt-4 text-center text-xs text-gray-500">
+        Press {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}+Shift+V to copy
+    </div>
 </main>
+
+{#if showSuccessToast}
+    <Toast
+        message={TOAST_MESSAGES.COPY_SUCCESS}
+        type={TOAST_TYPES.SUCCESS}
+        duration={3000}
+        onClose={() => (showSuccessToast = false)}
+    />
+{/if}
+
+{#if showErrorToast}
+    <Toast
+        message={TOAST_MESSAGES.COPY_ERROR}
+        type={TOAST_TYPES.ERROR}
+        duration={3000}
+        onClose={() => (showErrorToast = false)}
+    />
+{/if}
