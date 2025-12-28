@@ -1,16 +1,53 @@
-import '../app.css';
-import Content from "@/entrypoints/content/Content.svelte";
-import { mount } from "svelte";
+import { logger } from "@/lib/utils/logger";
+import { getCopyOptions } from "@/lib/storage";
+import { formatLink, copyToClipboard } from "@/lib/utils/format";
+import { showToast } from "@/lib/utils/toast";
+import { TOAST_TYPES } from "@/lib/types/toast";
+import { TOAST_MESSAGES } from "@/lib/constants";
+import type { PageInfo } from "@/lib/types/format";
 
 export default defineContentScript({
-  allFrames: true,
-  matches: ['*://*/*'],
-  main() {
-    // const appVersion = browser?.runtime?.getManifest()?.version || "0.0.0-dev"
-    console.log('Hello content.');
+    matches: ["<all_urls>"],
+    async main() {
+        logger.info("Smart Clippy content script activated");
 
-    mount(Content, {
-      target: document.body
-    })
-  }
+        // Listen for keyboard shortcut via background script
+        browser.runtime.onMessage.addListener((message) => {
+            if (message.action === "copy-page-info") {
+                handleCopyPageInfo();
+            }
+        });
+
+        async function handleCopyPageInfo() {
+            logger.debug("Copying page info to clipboard");
+
+            try {
+                // Get page info
+                const pageInfo: PageInfo = {
+                    title: document.title,
+                    url: window.location.href,
+                    selectedText: window.getSelection()?.toString().trim(),
+                };
+
+                // Get user preferences
+                const options = await getCopyOptions();
+
+                // Format the link
+                const formattedLink = formatLink(
+                    pageInfo,
+                    options.copyFormat,
+                    options.customFormat
+                );
+
+                // Copy to clipboard
+                await copyToClipboard(formattedLink);
+
+                // Show success toast
+                showToast(TOAST_MESSAGES.COPY_SUCCESS, TOAST_TYPES.SUCCESS);
+            } catch (error) {
+                logger.error("Error copying link:", error);
+                showToast(TOAST_MESSAGES.COPY_ERROR, TOAST_TYPES.ERROR);
+            }
+        }
+    },
 });
