@@ -5,6 +5,7 @@
     import { getCopyOptions, saveCopyOptions } from "@/lib/storage";
     import { getCopyShortcut, formatShortcut } from "@/lib/utils/keyboard-shortcut";
     import { getCustomFormatError } from "@/lib/utils/validation";
+    import { cn } from "@/lib/utils/cn";
     import { logger } from "@/lib/utils/logger";
     import { TOAST_TYPES } from "@/lib/types/toast";
     import { TOAST_MESSAGES } from "@/lib/constants";
@@ -107,9 +108,12 @@
                         type="text"
                         bind:value={options.customFormat}
                         placeholder="Use {'{title}'} and {'{url}'} as placeholders"
-                        class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-1 {customFormatError
-                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'}"
+                        class={cn(
+                            "w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-1",
+                            customFormatError
+                                ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                                : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        )}
                     />
                     {#if customFormatError}
                         <p class="mt-1 text-xs text-red-600">{customFormatError}</p>
