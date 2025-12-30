@@ -3,12 +3,23 @@
     import { TOAST_MESSAGES } from "@/lib/constants";
     import { getCopyOptions } from "@/lib/storage";
     import { formatLink, copyToClipboard } from "@/lib/utils/format";
+    import { getCopyShortcut, formatShortcut } from "@/lib/utils/keyboard-shortcut";
     import type { PageInfo } from "@/lib/types/format";
     import Toast from "@/lib/components/Toast.svelte";
 
     let showSuccessToast = $state(false);
     let showErrorToast = $state(false);
     let isLoading = $state(false);
+    let keyboardShortcut = $state<string | null>(null);
+
+    // Load keyboard shortcut on mount
+    $effect(() => {
+        getCopyShortcut().then((shortcut) => {
+            if (shortcut) {
+                keyboardShortcut = formatShortcut(shortcut);
+            }
+        });
+    });
 
     async function handleCopyClick() {
         isLoading = true;
@@ -73,9 +84,11 @@
         </button>
     </div>
 
-    <div class="mt-4 text-center text-xs text-gray-500">
-        Press {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}+Shift+V to copy
-    </div>
+    {#if keyboardShortcut}
+        <div class="mt-4 text-center text-xs text-gray-500">
+            Press {keyboardShortcut} to copy
+        </div>
+    {/if}
 </main>
 
 {#if showSuccessToast}

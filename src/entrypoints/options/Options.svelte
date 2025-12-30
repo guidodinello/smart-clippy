@@ -3,6 +3,7 @@
     import { COPY_FORMATS } from "@/lib/types/format";
     import type { CopyOptions } from "@/lib/types/format";
     import { getCopyOptions, saveCopyOptions } from "@/lib/storage";
+    import { getCopyShortcut, formatShortcut } from "@/lib/utils/keyboard-shortcut";
     import { TOAST_TYPES } from "@/lib/types/toast";
     import { TOAST_MESSAGES } from "@/lib/constants";
     import Toast from "@/lib/components/Toast.svelte";
@@ -14,10 +15,15 @@
     let isLoading = $state(true);
     let showSavedToast = $state(false);
     let showCustomInput = $derived(options.copyFormat === COPY_FORMATS.CUSTOM);
+    let keyboardShortcut = $state<string | null>(null);
 
     onMount(async () => {
         try {
             options = await getCopyOptions();
+            const shortcut = await getCopyShortcut();
+            if (shortcut) {
+                keyboardShortcut = formatShortcut(shortcut);
+            }
         } catch (error) {
             console.error("Error loading options:", error);
         } finally {
@@ -51,11 +57,14 @@
         <div class="space-y-6">
             <div class="rounded-lg bg-blue-50 p-4">
                 <p class="text-sm text-gray-700">
-                    Configure how Smart Clippy formats your copied links. Use the keyboard shortcut
-                    <kbd class="rounded bg-white px-2 py-1 text-xs font-semibold shadow">
-                        {navigator.platform.includes("Mac") ? "⌘" : "Ctrl"}+Shift+V
-                    </kbd>
-                    to quickly copy the current page.
+                    Configure how Smart Clippy formats your copied links.
+                    {#if keyboardShortcut}
+                        Use the keyboard shortcut
+                        <kbd class="rounded bg-white px-2 py-1 text-xs font-semibold shadow">
+                            {keyboardShortcut}
+                        </kbd>
+                        to quickly copy the current page.
+                    {/if}
                 </p>
             </div>
 

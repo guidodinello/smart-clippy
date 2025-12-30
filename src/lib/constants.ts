@@ -16,11 +16,6 @@ export const TOAST_DURATION = {
     LONG: 5000,
 } as const;
 
-export const KEYBOARD_SHORTCUT = {
-    DEFAULT: "Ctrl+Shift+V",
-    MAC: "Command+Shift+V",
-} as const;
-
 export const TOAST_MESSAGES = {
     COPY_SUCCESS: "Link copied!",
     COPY_ERROR: "Failed to copy link. Check the console for more details.",
