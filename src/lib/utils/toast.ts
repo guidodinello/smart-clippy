@@ -1,35 +1,32 @@
 import type { ToastType } from "@/lib/types/toast";
 import { TOAST_TYPES } from "@/lib/types/toast";
 import { TOAST_DURATION } from "@/lib/constants";
+import { Deduplicator } from "@/lib/utils/deduplicator";
 
 let toastContainer: HTMLDivElement | null = null;
+const deduplicator = new Deduplicator(1000); // 1 second deduplication window
 
-// Deduplication: Track recently shown toasts
-const recentToasts = new Map<string, number>();
-const DEDUP_WINDOW = 1000; // 1 second deduplication window
-
+/**
+ * Display a toast notification in the content script
+ * Toasts are automatically deduplicated within a 1-second window
+ * @param message The message to display
+ * @param type The toast type (info, success, error, warning)
+ * @param duration How long to show the toast in milliseconds
+ * @example
+ * ```ts
+ * showToast("Link copied!", TOAST_TYPES.SUCCESS, 3000);
+ * ```
+ */
 export function showToast(
     message: string,
     type: ToastType = TOAST_TYPES.INFO,
     duration: number = TOAST_DURATION.DEFAULT
 ) {
-    // Deduplicate: Check if this exact message was shown recently
+    // Check deduplication
     const toastKey = `${type}:${message}`;
-    const now = Date.now();
-    const lastShown = recentToasts.get(toastKey);
-
-    if (lastShown && now - lastShown < DEDUP_WINDOW) {
-        // Skip showing duplicate toast
-        return;
+    if (!deduplicator.check(toastKey)) {
+        return; // Skip duplicate toast
     }
-
-    // Record this toast as shown
-    recentToasts.set(toastKey, now);
-
-    // Clean up old entries from deduplication map
-    setTimeout(() => {
-        recentToasts.delete(toastKey);
-    }, DEDUP_WINDOW);
 
     // Ensure container exists
     if (!toastContainer) {

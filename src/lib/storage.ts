@@ -2,6 +2,11 @@ import type { CopyOptions } from "@/lib/types/format";
 import { STORAGE_KEYS, DEFAULT_OPTIONS } from "@/lib/constants";
 import { logger } from "@/lib/utils/logger";
 
+/**
+ * Retrieve user's copy format preferences from browser storage
+ * Falls back to defaults if storage is unavailable or empty
+ * @returns Promise resolving to CopyOptions (defaults if not set)
+ */
 export async function getCopyOptions(): Promise<CopyOptions> {
     try {
         const result = await browser.storage.sync.get([
@@ -21,6 +26,11 @@ export async function getCopyOptions(): Promise<CopyOptions> {
     }
 }
 
+/**
+ * Save user's copy format preferences to browser storage (synced across devices)
+ * @param options The copy options to save
+ * @throws Error if storage quota exceeded or write fails
+ */
 export async function saveCopyOptions(options: CopyOptions): Promise<void> {
     try {
         await browser.storage.sync.set({

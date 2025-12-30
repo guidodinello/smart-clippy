@@ -8,6 +8,9 @@ const MAX_URL_LENGTH = 2000;
 
 /**
  * Truncate a string to a maximum length with ellipsis
+ * @param text The text to truncate
+ * @param maxLength The maximum length (including ellipsis)
+ * @returns Truncated string with "..." if needed
  */
 function truncate(text: string, maxLength: number): string {
     if (text.length <= maxLength) {
@@ -16,6 +19,22 @@ function truncate(text: string, maxLength: number): string {
     return text.substring(0, maxLength - 3) + "...";
 }
 
+/**
+ * Format a page link according to the specified format
+ * @param pageInfo The page information (title, URL, selected text)
+ * @param format The copy format to use (markdown, HTML, plaintext, custom)
+ * @param customFormat The custom format template (used only when format is CUSTOM)
+ * @returns Formatted link string ready to copy to clipboard
+ * @example
+ * ```ts
+ * const formatted = formatLink(
+ *   { title: "Example", url: "https://example.com" },
+ *   COPY_FORMATS.MARKDOWN,
+ *   ""
+ * );
+ * // Returns: "[Example](https://example.com)"
+ * ```
+ */
 export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat: string): string {
     logger.debug("Formatting link:", { pageInfo, format });
 
@@ -72,6 +91,15 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
     return formattedLink;
 }
 
+/**
+ * Copy text to the system clipboard using the Clipboard API
+ * @param text The text to copy
+ * @throws Error if clipboard access is denied or fails
+ * @example
+ * ```ts
+ * await copyToClipboard("[Example](https://example.com)");
+ * ```
+ */
 export async function copyToClipboard(text: string): Promise<void> {
     try {
         await navigator.clipboard.writeText(text);
