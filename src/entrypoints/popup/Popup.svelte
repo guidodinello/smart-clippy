@@ -87,6 +87,8 @@
             class="w-full rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
             onclick={handleCopyClick}
             disabled={isLoading}
+            aria-busy={isLoading}
+            aria-label={isLoading ? "Copying link to clipboard" : "Copy current page link to clipboard"}
         >
             {isLoading ? "Copying..." : "Copy Link"}
         </button>
@@ -94,6 +96,7 @@
         <button
             class="w-full rounded border border-gray-300 bg-white px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             onclick={handleOpenOptions}
+            aria-label="Open Smart Clippy options page"
         >
             Options
         </button>

@@ -48,8 +48,9 @@
             "animate-slide-in fixed bottom-4 right-4 z-50 max-w-md rounded-lg border-l-4 px-4 py-3 shadow-lg",
             typeStyles[type]
         )}
-        role="status"
+        role="alert"
         aria-live="polite"
+        aria-atomic="true"
     >
         <div class="flex items-center justify-between gap-3">
             <p class="m-0 flex-1 text-sm leading-none">{message}</p>
