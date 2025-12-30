@@ -4,6 +4,7 @@
     import { getCopyOptions } from "@/lib/storage";
     import { formatLink, copyToClipboard } from "@/lib/utils/format";
     import { getCopyShortcut, formatShortcut } from "@/lib/utils/keyboard-shortcut";
+    import { logger } from "@/lib/utils/logger";
     import type { PageInfo } from "@/lib/types/format";
     import Toast from "@/lib/components/Toast.svelte";
 
@@ -49,7 +50,7 @@
 
             showSuccessToast = true;
         } catch (error) {
-            console.error("Error copying link:", error);
+            logger.error("Error copying link:", error);
             showErrorToast = true;
         } finally {
             isLoading = false;

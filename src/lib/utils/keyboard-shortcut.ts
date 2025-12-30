@@ -1,3 +1,5 @@
+import { logger } from "@/lib/utils/logger";
+
 /**
  * Get the configured keyboard shortcut for the copy-page-info command
  * @returns The keyboard shortcut string (e.g., "Alt+Shift+C") or null if not configured
@@ -8,7 +10,7 @@ export async function getCopyShortcut(): Promise<string | null> {
         const copyCommand = commands.find((cmd) => cmd.name === "copy-page-info");
         return copyCommand?.shortcut || null;
     } catch (error) {
-        console.error("Error getting keyboard shortcut:", error);
+        logger.error("Error getting keyboard shortcut:", error);
         return null;
     }
 }

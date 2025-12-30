@@ -4,6 +4,8 @@
     import type { CopyOptions } from "@/lib/types/format";
     import { getCopyOptions, saveCopyOptions } from "@/lib/storage";
     import { getCopyShortcut, formatShortcut } from "@/lib/utils/keyboard-shortcut";
+    import { getCustomFormatError } from "@/lib/utils/validation";
+    import { logger } from "@/lib/utils/logger";
     import { TOAST_TYPES } from "@/lib/types/toast";
     import { TOAST_MESSAGES } from "@/lib/constants";
     import Toast from "@/lib/components/Toast.svelte";
@@ -16,6 +18,9 @@
     let showSavedToast = $state(false);
     let showCustomInput = $derived(options.copyFormat === COPY_FORMATS.CUSTOM);
     let keyboardShortcut = $state<string | null>(null);
+    let customFormatError = $derived(
+        showCustomInput ? getCustomFormatError(options.customFormat) : null
+    );
 
     onMount(async () => {
         try {
@@ -25,18 +30,24 @@
                 keyboardShortcut = formatShortcut(shortcut);
             }
         } catch (error) {
-            console.error("Error loading options:", error);
+            logger.error("Error loading options:", error);
         } finally {
             isLoading = false;
         }
     });
 
     async function handleSave() {
+        // Validate custom format if selected
+        if (showCustomInput && customFormatError) {
+            logger.warn("Cannot save: invalid custom format");
+            return;
+        }
+
         try {
             await saveCopyOptions(options);
             showSavedToast = true;
         } catch (error) {
-            console.error("Error saving options:", error);
+            logger.error("Error saving options:", error);
         }
     }
 </script>
@@ -96,19 +107,26 @@
                         type="text"
                         bind:value={options.customFormat}
                         placeholder="Use {'{title}'} and {'{url}'} as placeholders"
-                        class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-1 {customFormatError
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'}"
                     />
-                    <p class="mt-1 text-xs text-gray-500">
-                        Example: <code class="rounded bg-gray-100 px-1">{"{title}"}: {"{url}"}</code
-                        >
-                    </p>
+                    {#if customFormatError}
+                        <p class="mt-1 text-xs text-red-600">{customFormatError}</p>
+                    {:else}
+                        <p class="mt-1 text-xs text-gray-500">
+                            Example: <code class="rounded bg-gray-100 px-1">{"{title}"}: {"{url}"}</code
+                            >
+                        </p>
+                    {/if}
                 </div>
             {/if}
 
             <div class="flex items-center gap-4 pt-4">
                 <button
                     onclick={handleSave}
-                    class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    disabled={!!customFormatError}
+                    class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     Save Options
                 </button>
