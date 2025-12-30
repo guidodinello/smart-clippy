@@ -5,7 +5,19 @@ import { logger } from "@/lib/utils/logger";
 export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat: string): string {
     logger.debug("Formatting link:", { pageInfo, format });
 
-    const { title, url, selectedText } = pageInfo;
+    const { url, selectedText } = pageInfo;
+
+    // Fallback for empty titles
+    let title = pageInfo.title?.trim();
+    if (!title) {
+        try {
+            const hostname = new URL(url).hostname;
+            title = hostname || "Untitled Page";
+        } catch {
+            title = "Untitled Page";
+        }
+    }
+
     let formattedLink = "";
 
     switch (format) {
