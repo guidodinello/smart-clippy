@@ -2,7 +2,7 @@ type LogLevel = "debug" | "info" | "warn" | "error";
 
 class Logger {
     private isDevelopment = import.meta.env.DEV;
-    private prefix = "[Pullscope]";
+    private prefix = "[Smart Clippy]"; // TODO: read addon name or some id
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private log(level: LogLevel, message: string, ...args: any[]) {
