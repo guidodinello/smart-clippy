@@ -4,11 +4,33 @@ import { TOAST_DURATION } from "@/lib/constants";
 
 let toastContainer: HTMLDivElement | null = null;
 
+// Deduplication: Track recently shown toasts
+const recentToasts = new Map<string, number>();
+const DEDUP_WINDOW = 1000; // 1 second deduplication window
+
 export function showToast(
     message: string,
     type: ToastType = TOAST_TYPES.INFO,
     duration: number = TOAST_DURATION.DEFAULT
 ) {
+    // Deduplicate: Check if this exact message was shown recently
+    const toastKey = `${type}:${message}`;
+    const now = Date.now();
+    const lastShown = recentToasts.get(toastKey);
+
+    if (lastShown && now - lastShown < DEDUP_WINDOW) {
+        // Skip showing duplicate toast
+        return;
+    }
+
+    // Record this toast as shown
+    recentToasts.set(toastKey, now);
+
+    // Clean up old entries from deduplication map
+    setTimeout(() => {
+        recentToasts.delete(toastKey);
+    }, DEDUP_WINDOW);
+
     // Ensure container exists
     if (!toastContainer) {
         toastContainer = document.createElement("div");
