@@ -2,6 +2,10 @@ import "@/app.css";
 import { mount } from "svelte";
 import Popup from "@/entrypoints/popup/Popup.svelte";
 
-export default defineUnlistedScript(() => {
-    mount(Popup, { target: document.getElementById("app")! });
-});
+const appElement = document.getElementById("app");
+
+if (!appElement) {
+    throw new Error("Failed to find app element. Cannot mount popup.");
+}
+
+mount(Popup, { target: appElement });
