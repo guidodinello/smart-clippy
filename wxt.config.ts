@@ -17,7 +17,7 @@ export default defineConfig({
         },
         browser_specific_settings: {
             gecko: {
-                id: "{a129b68f-faa5-4b1c-a71f-c0e5c2245ab9}",
+                id: "smart-clippy@guidodinello.dev",
                 // Required by Firefox for all new extensions. This extension does not collect any user data
                 // @ts-ignore
                 data_collection_permissions: { required: ["none"] },
@@ -26,13 +26,12 @@ export default defineConfig({
         commands: {
             "copy-page-info": {
                 suggested_key: {
-                    default: "Ctrl+Shift+V",
-                    mac: "Command+Shift+V",
+                    default: "Alt+Shift+C",
+                    mac: "Alt+Shift+C",
                 },
                 description: "Copy page title and URL to clipboard",
             },
         },
-        default_locale: "en",
     },
     vite: () => ({
         plugins: [tailwindcss()],
