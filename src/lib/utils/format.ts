@@ -2,10 +2,30 @@ import { COPY_FORMATS } from "@/lib/types/format";
 import type { CopyFormat, PageInfo } from "@/lib/types/format";
 import { logger } from "@/lib/utils/logger";
 
+// Limits for very long content
+const MAX_TITLE_LENGTH = 200;
+const MAX_URL_LENGTH = 2000;
+
+/**
+ * Truncate a string to a maximum length with ellipsis
+ */
+function truncate(text: string, maxLength: number): string {
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return text.substring(0, maxLength - 3) + "...";
+}
+
 export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat: string): string {
     logger.debug("Formatting link:", { pageInfo, format });
 
-    const { url, selectedText } = pageInfo;
+    let { url, selectedText } = pageInfo;
+
+    // Truncate extremely long URLs
+    if (url.length > MAX_URL_LENGTH) {
+        logger.warn("URL exceeds maximum length, truncating");
+        url = truncate(url, MAX_URL_LENGTH);
+    }
 
     // Fallback for empty titles
     let title = pageInfo.title?.trim();
@@ -16,6 +36,12 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
         } catch {
             title = "Untitled Page";
         }
+    }
+
+    // Truncate extremely long titles
+    if (title.length > MAX_TITLE_LENGTH) {
+        logger.debug("Title exceeds maximum length, truncating");
+        title = truncate(title, MAX_TITLE_LENGTH);
     }
 
     let formattedLink = "";
