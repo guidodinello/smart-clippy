@@ -23,6 +23,20 @@
         showCustomInput ? getCustomFormatError(options.customFormat) : null
     );
 
+    // Live preview for custom format
+    let customFormatPreview = $derived(() => {
+        if (!showCustomInput || !options.customFormat) {
+            return null;
+        }
+
+        const exampleTitle = "Example Page";
+        const exampleUrl = "https://example.com";
+
+        return options.customFormat
+            .replace(/{title}/g, exampleTitle)
+            .replace(/{url}/g, exampleUrl);
+    });
+
     onMount(async () => {
         try {
             options = await getCopyOptions();
@@ -122,6 +136,13 @@
                             Example: <code class="rounded bg-gray-100 px-1">{"{title}"}: {"{url}"}</code
                             >
                         </p>
+                    {/if}
+
+                    {#if customFormatPreview && !customFormatError}
+                        <div class="mt-3 rounded-md bg-blue-50 p-3">
+                            <p class="mb-1 text-xs font-medium text-gray-700">Preview:</p>
+                            <code class="block break-all text-sm text-gray-800">{customFormatPreview}</code>
+                        </div>
                     {/if}
                 </div>
             {/if}
