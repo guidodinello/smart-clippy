@@ -4,12 +4,14 @@
     import { getCopyOptions } from "@/lib/storage";
     import { formatLink, copyToClipboard } from "@/lib/utils/format";
     import { getCopyShortcut, formatShortcut } from "@/lib/utils/keyboard-shortcut";
+    import { isRestrictedPage, getRestrictedPageMessage } from "@/lib/utils/page-utils";
     import { logger } from "@/lib/utils/logger";
     import type { PageInfo } from "@/lib/types/format";
     import Toast from "@/lib/components/Toast.svelte";
 
     let showSuccessToast = $state(false);
     let showErrorToast = $state(false);
+    let errorMessage = $state<string>(TOAST_MESSAGES.COPY_ERROR);
     let isLoading = $state(false);
     let keyboardShortcut = $state<string | null>(null);
 
@@ -31,8 +33,19 @@
                 currentWindow: true,
             });
 
-            if (!activeTab?.title || !activeTab?.url) {
+            if (!activeTab?.url) {
                 throw new Error("Unable to get tab information");
+            }
+
+            // Check if page is restricted
+            if (isRestrictedPage(activeTab.url)) {
+                errorMessage = getRestrictedPageMessage(activeTab.url);
+                showErrorToast = true;
+                return;
+            }
+
+            if (!activeTab.title) {
+                throw new Error("Unable to get tab title");
             }
 
             const pageInfo: PageInfo = {
@@ -51,6 +64,7 @@
             showSuccessToast = true;
         } catch (error) {
             logger.error("Error copying link:", error);
+            errorMessage = TOAST_MESSAGES.COPY_ERROR;
             showErrorToast = true;
         } finally {
             isLoading = false;
@@ -103,7 +117,7 @@
 
 {#if showErrorToast}
     <Toast
-        message={TOAST_MESSAGES.COPY_ERROR}
+        message={errorMessage}
         type={TOAST_TYPES.ERROR}
         duration={3000}
         onClose={() => (showErrorToast = false)}
