@@ -1,0 +1,20 @@
+/**
+ * Escape HTML special characters to prevent XSS
+ * @param text The text to escape
+ * @returns HTML-safe string
+ * @example
+ * ```ts
+ * escapeHtml('<script>alert("xss")</script>');
+ * // Returns: '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;'
+ * ```
+ */
+export function escapeHtml(text: string): string {
+    const htmlEscapeMap: Record<string, string> = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+    };
+    return text.replace(/[&<>"']/g, (char) => htmlEscapeMap[char]);
+}
