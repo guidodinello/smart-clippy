@@ -88,7 +88,9 @@
             onclick={handleCopyClick}
             disabled={isLoading}
             aria-busy={isLoading}
-            aria-label={isLoading ? "Copying link to clipboard" : "Copy current page link to clipboard"}
+            aria-label={isLoading
+                ? "Copying link to clipboard"
+                : "Copy current page link to clipboard"}
         >
             {isLoading ? "Copying..." : "Copy Link"}
         </button>

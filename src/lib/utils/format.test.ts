@@ -46,7 +46,9 @@ describe("formatLink", () => {
         it("should escape markdown special characters in title", () => {
             const pageInfo = { ...basicPageInfo, title: "Link: ](javascript:alert('xss'))" };
             const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
-            expect(result).toBe("[Link: \\]\\(javascript:alert\\('xss'\\)\\)](https://example.com)");
+            expect(result).toBe(
+                "[Link: \\]\\(javascript:alert\\('xss'\\)\\)](https://example.com)"
+            );
         });
 
         it("should escape markdown special characters in URL", () => {
@@ -101,12 +103,10 @@ describe("formatLink", () => {
         it("should escape all HTML entities", () => {
             const pageInfo = {
                 ...basicPageInfo,
-                title: '& < > " \'',
+                title: "& < > \" '",
             };
             const result = formatLink(pageInfo, COPY_FORMATS.HTML, "");
-            expect(result).toBe(
-                '<a href="https://example.com">&amp; &lt; &gt; &quot; &#39;</a>'
-            );
+            expect(result).toBe('<a href="https://example.com">&amp; &lt; &gt; &quot; &#39;</a>');
         });
     });
 
@@ -154,11 +154,7 @@ describe("formatLink", () => {
                 ...basicPageInfo,
                 url: 'https://example.com/?q=test&param="value"',
             };
-            const result = formatLink(
-                pageInfo,
-                COPY_FORMATS.CUSTOM,
-                "<a href='{url}'>{title}</a>"
-            );
+            const result = formatLink(pageInfo, COPY_FORMATS.CUSTOM, "<a href='{url}'>{title}</a>");
             expect(result).toContain("&amp;");
             expect(result).toContain("&quot;");
         });

@@ -8,7 +8,13 @@ export function isRestrictedPage(url: string): boolean {
         return true;
     }
 
-    const restrictedProtocols = ["about:", "chrome:", "edge:", "moz-extension:", "chrome-extension:"];
+    const restrictedProtocols = [
+        "about:",
+        "chrome:",
+        "edge:",
+        "moz-extension:",
+        "chrome-extension:",
+    ];
     const restrictedDomains = ["chromewebstore.google.com", "addons.mozilla.org"];
 
     // Check protocol

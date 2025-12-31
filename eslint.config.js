@@ -45,6 +45,7 @@ export default [
                 HTMLDivElement: "readonly",
                 Element: "readonly",
                 MutationObserver: "readonly",
+                URL: "readonly",
                 // WXT globals
                 defineBackground: "readonly",
                 defineContentScript: "readonly",
@@ -102,6 +103,7 @@ export default [
                 HTMLDivElement: "readonly",
                 Element: "readonly",
                 MutationObserver: "readonly",
+                URL: "readonly",
                 // WXT globals
                 defineBackground: "readonly",
                 defineContentScript: "readonly",

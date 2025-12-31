@@ -76,13 +76,16 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
         case COPY_FORMATS.PLAINTEXT:
             formattedLink = `${title} - ${url}`;
             break;
-        case COPY_FORMATS.CUSTOM:
+        case COPY_FORMATS.CUSTOM: {
             // Detect if custom format contains HTML tags and escape accordingly
             const containsHtml = /<[a-z][\s\S]*>/i.test(customFormat);
             const escapedTitle = containsHtml ? escapeHtml(title) : title;
             const escapedUrl = containsHtml ? escapeHtml(url) : url;
-            formattedLink = customFormat.replaceAll("{title}", escapedTitle).replaceAll("{url}", escapedUrl);
+            formattedLink = customFormat
+                .replaceAll("{title}", escapedTitle)
+                .replaceAll("{url}", escapedUrl);
             break;
+        }
         default:
             logger.warn("Unknown format, using markdown:", format);
             formattedLink = `[${title}](${url})`;
