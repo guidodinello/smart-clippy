@@ -42,6 +42,36 @@ describe("formatLink", () => {
             const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
             expect(result).toContain("...");
         });
+
+        it("should escape markdown special characters in title", () => {
+            const pageInfo = { ...basicPageInfo, title: "Link: ](javascript:alert('xss'))" };
+            const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
+            expect(result).toBe("[Link: \\]\\(javascript:alert\\('xss'\\)\\)](https://example.com)");
+        });
+
+        it("should escape markdown special characters in URL", () => {
+            const pageInfo = { ...basicPageInfo, url: "https://example.com/path(1)" };
+            const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
+            expect(result).toBe("[Example Page](https://example.com/path\\(1\\))");
+        });
+
+        it("should escape backslashes in markdown", () => {
+            const pageInfo = { ...basicPageInfo, title: "Title with \\ backslash" };
+            const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
+            expect(result).toBe("[Title with \\\\ backslash](https://example.com)");
+        });
+
+        it("should escape all markdown special characters", () => {
+            const pageInfo = {
+                ...basicPageInfo,
+                title: "Test [title] with (parens)",
+                url: "https://example.com/path[1](2)",
+            };
+            const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
+            expect(result).toBe(
+                "[Test \\[title\\] with \\(parens\\)](https://example.com/path\\[1\\]\\(2\\))"
+            );
+        });
     });
 
     describe("HTML format", () => {
@@ -105,6 +135,54 @@ describe("formatLink", () => {
         it("should handle custom format without placeholders", () => {
             const result = formatLink(basicPageInfo, COPY_FORMATS.CUSTOM, "Static text");
             expect(result).toBe("Static text");
+        });
+
+        it("should escape HTML when custom format contains HTML tags", () => {
+            const pageInfo = { ...basicPageInfo, title: "<script>alert('xss')</script>" };
+            const result = formatLink(
+                pageInfo,
+                COPY_FORMATS.CUSTOM,
+                "<span class='title'>{title}</span>"
+            );
+            expect(result).toBe(
+                "<span class='title'>&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;</span>"
+            );
+        });
+
+        it("should escape HTML in URL when custom format contains HTML tags", () => {
+            const pageInfo = {
+                ...basicPageInfo,
+                url: 'https://example.com/?q=test&param="value"',
+            };
+            const result = formatLink(
+                pageInfo,
+                COPY_FORMATS.CUSTOM,
+                "<a href='{url}'>{title}</a>"
+            );
+            expect(result).toContain("&amp;");
+            expect(result).toContain("&quot;");
+        });
+
+        it("should not escape when custom format does not contain HTML", () => {
+            const pageInfo = { ...basicPageInfo, title: "<script>test</script>" };
+            const result = formatLink(pageInfo, COPY_FORMATS.CUSTOM, "{title} - {url}");
+            expect(result).toBe("<script>test</script> - https://example.com");
+        });
+
+        it("should detect various HTML tag patterns", () => {
+            const pageInfo = { ...basicPageInfo, title: "Test & Title" };
+
+            // Should escape with self-closing tags
+            const result1 = formatLink(
+                pageInfo,
+                COPY_FORMATS.CUSTOM,
+                "<img src='{url}' alt='{title}'/>"
+            );
+            expect(result1).toContain("Test &amp; Title");
+
+            // Should escape with div tags
+            const result2 = formatLink(pageInfo, COPY_FORMATS.CUSTOM, "<div>{title}</div>");
+            expect(result2).toContain("Test &amp; Title");
         });
     });
 

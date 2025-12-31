@@ -1,7 +1,7 @@
 import { COPY_FORMATS } from "@/lib/types/format";
 import type { CopyFormat, PageInfo } from "@/lib/types/format";
 import { logger } from "@/lib/utils/logger";
-import { escapeHtml } from "@/lib/utils/escape-html";
+import { escapeHtml, escapeMarkdown } from "@/lib/utils/escape-html";
 
 // Limits for very long content
 const MAX_TITLE_LENGTH = 200;
@@ -68,7 +68,7 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
 
     switch (format) {
         case COPY_FORMATS.MARKDOWN:
-            formattedLink = `[${title}](${url})`;
+            formattedLink = `[${escapeMarkdown(title)}](${escapeMarkdown(url)})`;
             break;
         case COPY_FORMATS.HTML:
             formattedLink = `<a href="${escapeHtml(url)}">${escapeHtml(title)}</a>`;
@@ -77,7 +77,11 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
             formattedLink = `${title} - ${url}`;
             break;
         case COPY_FORMATS.CUSTOM:
-            formattedLink = customFormat.replaceAll("{title}", title).replaceAll("{url}", url);
+            // Detect if custom format contains HTML tags and escape accordingly
+            const containsHtml = /<[a-z][\s\S]*>/i.test(customFormat);
+            const escapedTitle = containsHtml ? escapeHtml(title) : title;
+            const escapedUrl = containsHtml ? escapeHtml(url) : url;
+            formattedLink = customFormat.replaceAll("{title}", escapedTitle).replaceAll("{url}", escapedUrl);
             break;
         default:
             logger.warn("Unknown format, using markdown:", format);

@@ -18,3 +18,24 @@ export function escapeHtml(text: string): string {
     };
     return text.replace(/[&<>"']/g, (char) => htmlEscapeMap[char]);
 }
+
+/**
+ * Escape markdown special characters to prevent syntax breaking
+ * @param text The text to escape
+ * @returns Markdown-safe string
+ * @example
+ * ```ts
+ * escapeMarkdown('Link: ](javascript:alert("xss"))');
+ * // Returns: 'Link: \\]\\(javascript:alert("xss")\\)'
+ * ```
+ */
+export function escapeMarkdown(text: string): string {
+    const markdownEscapeMap: Record<string, string> = {
+        "\\": "\\\\",
+        "[": "\\[",
+        "]": "\\]",
+        "(": "\\(",
+        ")": "\\)",
+    };
+    return text.replace(/[\\[\]()]/g, (char) => markdownEscapeMap[char]);
+}
