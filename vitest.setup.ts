@@ -1,3 +1,5 @@
+/* eslint-disable no-undef, @typescript-eslint/no-explicit-any */
+
 // Mock browser API for tests
 global.browser = {
     storage: {
