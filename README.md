@@ -183,7 +183,7 @@ pnpm fix
 ## Project Structure
 
 ```
-smart-clippy-new/
+smart-clippy/
 ├── src/
 │   ├── entrypoints/          # Extension entry points
 │   │   ├── background.ts     # Background script (keyboard commands)
