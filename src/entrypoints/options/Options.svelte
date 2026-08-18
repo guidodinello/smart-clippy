@@ -32,9 +32,7 @@
         const exampleTitle = "Example Page";
         const exampleUrl = "https://example.com";
 
-        return options.customFormat
-            .replace(/{title}/g, exampleTitle)
-            .replace(/{url}/g, exampleUrl);
+        return options.customFormat.replace(/{title}/g, exampleTitle).replace(/{url}/g, exampleUrl);
     });
 
     onMount(async () => {
@@ -133,7 +131,8 @@
                         <p class="mt-1 text-xs text-red-600">{customFormatError}</p>
                     {:else}
                         <p class="mt-1 text-xs text-gray-500">
-                            Example: <code class="rounded bg-gray-100 px-1">{"{title}"}: {"{url}"}</code
+                            Example: <code class="rounded bg-gray-100 px-1"
+                                >{"{title}"}: {"{url}"}</code
                             >
                         </p>
                     {/if}
@@ -141,7 +140,9 @@
                     {#if customFormatPreview && !customFormatError}
                         <div class="mt-3 rounded-md bg-blue-50 p-3">
                             <p class="mb-1 text-xs font-medium text-gray-700">Preview:</p>
-                            <code class="block break-all text-sm text-gray-800">{customFormatPreview}</code>
+                            <code class="block break-all text-sm text-gray-800"
+                                >{customFormatPreview}</code
+                            >
                         </div>
                     {/if}
                 </div>

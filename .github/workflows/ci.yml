@@ -6,6 +6,9 @@ on:
     push:
         branches: [main]
 
+permissions:
+    contents: read
+
 jobs:
     lint-and-format:
         name: Lint & Format Check
@@ -45,7 +48,7 @@ jobs:
               run: pnpm lint
 
             - name: Run formatter check
-              run: pnpm format
+              run: pnpm format:check
 
             - name: Run type check
               run: pnpm check
