@@ -65,22 +65,26 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
     }
 
     let formattedLink = "";
+    let escapeSelectedText: (text: string) => string = (text) => text;
 
     switch (format) {
         case COPY_FORMATS.MARKDOWN:
             formattedLink = `[${escapeMarkdown(title)}](${escapeMarkdown(url)})`;
+            escapeSelectedText = escapeMarkdown;
             break;
         case COPY_FORMATS.HTML:
             formattedLink = `<a href="${escapeHtml(url)}">${escapeHtml(title)}</a>`;
+            escapeSelectedText = escapeHtml;
             break;
         case COPY_FORMATS.PLAINTEXT:
             formattedLink = `${title} - ${url}`;
             break;
         case COPY_FORMATS.CUSTOM: {
             // Detect if custom format contains HTML tags and escape accordingly
-            const containsHtml = /<[a-z][\s\S]*>/i.test(customFormat);
+            const containsHtml = /<[a-z][^>]*>/i.test(customFormat);
             const escapedTitle = containsHtml ? escapeHtml(title) : title;
             const escapedUrl = containsHtml ? escapeHtml(url) : url;
+            escapeSelectedText = containsHtml ? escapeHtml : (text) => text;
             formattedLink = customFormat
                 .replaceAll("{title}", escapedTitle)
                 .replaceAll("{url}", escapedUrl);
@@ -88,12 +92,13 @@ export function formatLink(pageInfo: PageInfo, format: CopyFormat, customFormat:
         }
         default:
             logger.warn("Unknown format, using markdown:", format);
-            formattedLink = `[${title}](${url})`;
+            formattedLink = `[${escapeMarkdown(title)}](${escapeMarkdown(url)})`;
+            escapeSelectedText = escapeMarkdown;
     }
 
     // Append selected text as blockquote if present
     if (selectedText && selectedText.trim()) {
-        formattedLink += `\n\n> ${selectedText.trim()}`;
+        formattedLink += `\n\n> ${escapeSelectedText(selectedText.trim())}`;
     }
 
     return formattedLink;

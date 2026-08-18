@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { formatLink, copyToClipboard } from "./format";
 import { COPY_FORMATS } from "@/lib/types/format";
-import type { PageInfo } from "@/lib/types/format";
+import type { CopyFormat, PageInfo } from "@/lib/types/format";
+import { logger } from "@/lib/utils/logger";
 
 describe("formatLink", () => {
     const basicPageInfo: PageInfo = {
@@ -193,6 +194,44 @@ describe("formatLink", () => {
             const pageInfo = { ...basicPageInfo, selectedText: "   " };
             const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
             expect(result).toBe("[Example Page](https://example.com)");
+        });
+
+        it("should escape markdown special characters in selected text", () => {
+            const pageInfo = { ...basicPageInfo, selectedText: "[x](javascript:alert('xss'))" };
+            const result = formatLink(pageInfo, COPY_FORMATS.MARKDOWN, "");
+            expect(result).toBe(
+                "[Example Page](https://example.com)\n\n> \\[x\\]\\(javascript:alert\\('xss'\\)\\)"
+            );
+        });
+
+        it("should escape HTML special characters in selected text for HTML format", () => {
+            const pageInfo = { ...basicPageInfo, selectedText: "<script>alert('xss')</script>" };
+            const result = formatLink(pageInfo, COPY_FORMATS.HTML, "");
+            expect(result).toBe(
+                '<a href="https://example.com">Example Page</a>\n\n> &lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;'
+            );
+        });
+
+        it("should not escape selected text for plaintext format", () => {
+            const pageInfo = { ...basicPageInfo, selectedText: "<b>[x]</b>" };
+            const result = formatLink(pageInfo, COPY_FORMATS.PLAINTEXT, "");
+            expect(result).toBe("Example Page - https://example.com\n\n> <b>[x]</b>");
+        });
+    });
+
+    describe("Unknown format fallback", () => {
+        it("should fall back to markdown format and log a warning", () => {
+            const warnSpy = vi.spyOn(logger, "warn").mockImplementation(() => {});
+            const result = formatLink(basicPageInfo, "invalid-format" as CopyFormat, "");
+            expect(result).toBe("[Example Page](https://example.com)");
+            expect(warnSpy).toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
+        it("should escape markdown special characters in the fallback", () => {
+            const pageInfo = { ...basicPageInfo, title: "Title [x] (y)" };
+            const result = formatLink(pageInfo, "invalid-format" as CopyFormat, "");
+            expect(result).toBe("[Title \\[x\\] \\(y\\)](https://example.com)");
         });
     });
 });
