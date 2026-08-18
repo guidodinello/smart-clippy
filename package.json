@@ -51,7 +51,7 @@
         "@types/chrome": "^0.0.269",
         "@typescript-eslint/eslint-plugin": "^8.46.4",
         "@typescript-eslint/parser": "^8.46.4",
-        "@vitest/ui": "^4.0.16",
+        "@vitest/ui": "4.0.16",
         "@wxt-dev/module-svelte": "^1.0.1",
         "eslint": "^9.39.1",
         "eslint-plugin-svelte": "^3.13.0",
@@ -67,8 +67,8 @@
         "tailwindcss": "4.0.0-alpha.24",
         "tslib": "^2.7.0",
         "typescript": "^5.6.2",
-        "vite": "^5.4.5",
-        "vitest": "^4.0.16",
+        "vite": "^5.4.21",
+        "vitest": "4.0.16",
         "wxt": "^0.19.9"
     },
     "overrides": {
@@ -78,7 +78,6 @@
         "tmp": ">=0.2.6",
         "adm-zip": ">=0.6.0",
         "uuid": ">=11.1.1",
-        "vite": ">=5.4.21 <6.0.0",
         "node-forge": ">=1.4.0",
         "js-yaml": ">=4.3.1 <5.0.0",
         "ws": ">=8.21.0",
@@ -98,7 +97,6 @@
         "tmp": ">=0.2.6",
         "adm-zip": ">=0.6.0",
         "uuid": ">=11.1.1",
-        "vite": ">=5.4.21 <6.0.0",
         "node-forge": ">=1.4.0",
         "js-yaml": ">=4.3.1 <5.0.0",
         "ws": ">=8.21.0",
@@ -110,5 +108,18 @@
         "nanoid": ">=3.3.18 <4.0.0",
         "cross-spawn": ">=7.0.5",
         "postcss": ">=8.5.23"
+    },
+    "pnpm": {
+        "overrides": {
+            "picomatch@2": ">=2.3.2 <3.0.0",
+            "picomatch@4": ">=4.0.4 <5.0.0",
+            "yaml@1": ">=1.10.3 <2.0.0",
+            "yaml@2": ">=2.8.3 <3.0.0",
+            "minimatch@3": ">=3.1.4 <4.0.0",
+            "minimatch@9": ">=9.0.7 <10.0.0",
+            "minimatch@10": ">=10.2.3 <11.0.0",
+            "brace-expansion@1": ">=1.1.18 <2.0.0",
+            "brace-expansion@2": ">=2.1.4 <3.0.0"
+        }
     }
 }
