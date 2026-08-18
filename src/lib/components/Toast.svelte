@@ -35,10 +35,10 @@
     };
 
     const typeStyles = {
-        info: "toast-info",
-        success: "toast-success",
-        error: "toast-error",
-        warning: "toast-warning",
+        info: "border-blue-500 bg-blue-50 text-blue-900",
+        success: "border-green-500 bg-green-50 text-green-900",
+        error: "border-red-500 bg-red-50 text-red-900",
+        warning: "border-yellow-500 bg-yellow-50 text-yellow-900",
     } as const satisfies Record<ToastType, string>;
 </script>
 
@@ -55,7 +55,7 @@
         <div class="flex items-center justify-between gap-3">
             <p class="m-0 flex-1 text-sm leading-none">{message}</p>
             <button
-                class="rounded text-white transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-white"
+                class="rounded transition-opacity hover:opacity-80 focus:outline-none focus:ring-2"
                 onclick={handleClose}
                 aria-label="Close notification"
             >

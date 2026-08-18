@@ -6,7 +6,7 @@ A modern browser extension that lets you quickly copy the current page's title a
 
 ## Features
 
--   **Quick Copy**: Press `Ctrl+Shift+V` (Windows/Linux) or `Cmd+Shift+V` (Mac) to instantly copy page info
+-   **Quick Copy**: Press `Alt+Shift+C` to instantly copy page info
 -   **Multiple Formats**:
     -   Markdown: `[Page Title](URL)`
     -   HTML: `<a href="URL">Page Title</a>`
@@ -53,7 +53,7 @@ pnpm build:firefox
 ### Quick Copy
 
 1. Visit any webpage
-2. Press `Ctrl+Shift+V` (Windows/Linux) or `Cmd+Shift+V` (Mac)
+2. Press `Alt+Shift+C`
 3. The page title and URL are copied to your clipboard!
 
 ### With Selected Text
@@ -183,7 +183,7 @@ pnpm fix
 ## Project Structure
 
 ```
-smart-clippy-new/
+smart-clippy/
 ├── src/
 │   ├── entrypoints/          # Extension entry points
 │   │   ├── background.ts     # Background script (keyboard commands)

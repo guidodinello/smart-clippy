@@ -166,9 +166,9 @@ logger.error("Failed to copy to clipboard", err);
 
 **Storage:**
 
--   Use `browser.storage.sync` for cross-device sync
+-   Always use `wxt/storage` (not `browser.storage` directly) — it provides key namespacing, typed getters, and a `watch()` API
+-   Use `sync:` prefix for cross-device sync, `local:` for device-local data
 -   Define storage keys in `constants.ts`
--   Wrap storage operations in try-catch blocks
 
 **Content Scripts:**
 
@@ -182,7 +182,7 @@ Before pushing:
 
 1. Test in Chrome (primary target)
 2. Test in Firefox (secondary target)
-3. Verify keyboard shortcut works (Ctrl+Shift+V)
+3. Verify keyboard shortcut works (Alt+Shift+C)
 4. Check that all copy formats work correctly
 5. Test selected text appending
 6. Verify options page saves and loads preferences
