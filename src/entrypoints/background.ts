@@ -36,7 +36,10 @@ export default defineBackground(() => {
                 // Show notification badge (optional visual feedback)
                 try {
                     await browser.action.setBadgeText({ text: "✗", tabId: activeTab.id });
-                    await browser.action.setBadgeBackgroundColor({ color: "#f44336", tabId: activeTab.id });
+                    await browser.action.setBadgeBackgroundColor({
+                        color: "#f44336",
+                        tabId: activeTab.id,
+                    });
                     setTimeout(() => {
                         browser.action.setBadgeText({ text: "", tabId: activeTab.id });
                     }, 2000);
@@ -57,7 +60,10 @@ export default defineBackground(() => {
             logger.error("Error handling copy command:", error);
 
             // If message failed to send, content script might not be injected
-            if (error instanceof Error && error.message.includes("Could not establish connection")) {
+            if (
+                error instanceof Error &&
+                error.message.includes("Could not establish connection")
+            ) {
                 logger.warn("Content script not ready. Page might still be loading.");
             }
         }
