@@ -16,7 +16,7 @@ export function escapeHtml(text: string): string {
         '"': "&quot;",
         "'": "&#39;",
     };
-    return text.replace(/[&<>"']/g, (char) => htmlEscapeMap[char]);
+    return text.replace(/[&<>"']/g, (char) => htmlEscapeMap[char] ?? char);
 }
 
 /**
@@ -37,5 +37,5 @@ export function escapeMarkdown(text: string): string {
         "(": "\\(",
         ")": "\\)",
     };
-    return text.replace(/[\\[\]()]/g, (char) => markdownEscapeMap[char]);
+    return text.replace(/[\\[\]()]/g, (char) => markdownEscapeMap[char] ?? char);
 }
