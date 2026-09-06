@@ -99,7 +99,7 @@
                 <select
                     id="format-select"
                     bind:value={options.copyFormat}
-                    class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                 >
                     <option value={COPY_FORMATS.MARKDOWN}> Markdown - [Page Title](URL) </option>
                     <option value={COPY_FORMATS.HTML}>
@@ -121,7 +121,7 @@
                         bind:value={options.customFormat}
                         placeholder="Use {'{title}'} and {'{url}'} as placeholders"
                         class={cn(
-                            "w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-1",
+                            "w-full rounded-md border px-3 py-2 focus:ring-1 focus:outline-none",
                             customFormatError
                                 ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                                 : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
@@ -140,7 +140,7 @@
                     {#if customFormatPreview && !customFormatError}
                         <div class="mt-3 rounded-md bg-blue-50 p-3">
                             <p class="mb-1 text-xs font-medium text-gray-700">Preview:</p>
-                            <code class="block break-all text-sm text-gray-800"
+                            <code class="block text-sm break-all text-gray-800"
                                 >{customFormatPreview}</code
                             >
                         </div>
@@ -154,7 +154,7 @@
                     disabled={!!customFormatError}
                     aria-label="Save copy format options"
                     aria-disabled={!!customFormatError}
-                    class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     Save Options
                 </button>

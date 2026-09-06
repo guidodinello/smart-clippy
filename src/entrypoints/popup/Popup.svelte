@@ -84,7 +84,7 @@
 
     <div class="space-y-2">
         <button
-            class="w-full rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            class="w-full rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
             onclick={handleCopyClick}
             disabled={isLoading}
             aria-busy={isLoading}
@@ -96,7 +96,7 @@
         </button>
 
         <button
-            class="w-full rounded border border-gray-300 bg-white px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="w-full rounded border border-gray-300 bg-white px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
             onclick={handleOpenOptions}
             aria-label="Open Smart Clippy options page"
         >
