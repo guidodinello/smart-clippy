@@ -9,10 +9,10 @@ import { logger } from "@/lib/utils/logger";
  */
 export async function getCopyOptions(): Promise<CopyOptions> {
     try {
-        const result = await browser.storage.sync.get([
+        const result = (await browser.storage.sync.get([
             STORAGE_KEYS.COPY_FORMAT,
             STORAGE_KEYS.CUSTOM_FORMAT,
-        ]);
+        ])) as Partial<CopyOptions>;
 
         logger.debug("Retrieved copy options:", result);
 

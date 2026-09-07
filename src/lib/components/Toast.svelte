@@ -45,7 +45,7 @@
 {#if visible}
     <div
         class={cn(
-            "animate-slide-in fixed bottom-4 right-4 z-50 max-w-md rounded-lg border-l-4 px-4 py-3 shadow-lg",
+            "animate-slide-in fixed right-4 bottom-4 z-50 max-w-md rounded-lg border-l-4 px-4 py-3 shadow-lg",
             typeStyles[type]
         )}
         role="alert"
@@ -55,7 +55,7 @@
         <div class="flex items-center justify-between gap-3">
             <p class="m-0 flex-1 text-sm leading-none">{message}</p>
             <button
-                class="rounded transition-opacity hover:opacity-80 focus:outline-none focus:ring-2"
+                class="rounded transition-opacity hover:opacity-80 focus:ring-2 focus:outline-none"
                 onclick={handleClose}
                 aria-label="Close notification"
             >

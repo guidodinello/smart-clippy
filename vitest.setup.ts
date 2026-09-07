@@ -10,8 +10,8 @@ global.browser = {
     },
 } as any;
 
-global.navigator = {
+vi.stubGlobal("navigator", {
     clipboard: {
         writeText: vi.fn(),
     },
-} as any;
+});
