@@ -6,16 +6,16 @@ A modern browser extension that lets you quickly copy the current page's title a
 
 ## Features
 
--   **Quick Copy**: Press `Alt+Shift+C` to instantly copy page info
--   **Multiple Formats**:
-    -   Markdown: `[Page Title](URL)`
-    -   HTML: `<a href="URL">Page Title</a>`
-    -   Plain Text: `Page Title - URL`
-    -   Custom: Define your own format using `{title}` and `{url}` placeholders
--   **Selected Text**: Automatically appends selected text as a blockquote
--   **Toast Notifications**: Visual feedback on copy success/failure
--   **Cross-Browser**: Works on Chrome, Firefox, and Chromium-based browsers
--   **Modern Stack**: Built with WXT, Svelte 5, TypeScript, and Tailwind CSS 4
+- **Quick Copy**: Press `Alt+Shift+C` to instantly copy page info
+- **Multiple Formats**:
+    - Markdown: `[Page Title](URL)`
+    - HTML: `<a href="URL">Page Title</a>`
+    - Plain Text: `Page Title - URL`
+    - Custom: Define your own format using `{title}` and `{url}` placeholders
+- **Selected Text**: Automatically appends selected text as a blockquote
+- **Toast Notifications**: Visual feedback on copy success/failure
+- **Cross-Browser**: Works on Chrome, Firefox, and Chromium-based browsers
+- **Modern Stack**: Built with WXT, Svelte 5, TypeScript, and Tailwind CSS 4
 
 ## Installation
 
@@ -72,8 +72,8 @@ pnpm build:firefox
 
 Click the extension icon in your browser toolbar to:
 
--   Copy the current page with a button click
--   Access the Options page
+- Copy the current page with a button click
+- Access the Options page
 
 ### Configuring Formats
 
@@ -112,8 +112,8 @@ GitHub - facebook/react: https://github.com/facebook/react
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (v18 or higher)
--   [pnpm](https://pnpm.io/) package manager
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [pnpm](https://pnpm.io/) package manager
 
 ### Setup
 
@@ -174,11 +174,11 @@ pnpm fix
 
 ## Technology Stack
 
--   **[WXT](https://wxt.dev/)** - Modern cross-browser extension framework
--   **[Svelte 5](https://svelte.dev/)** - Reactive UI framework with runes API
--   **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
--   **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS framework
--   **[Vite](https://vitejs.dev/)** - Fast build tool
+- **[WXT](https://wxt.dev/)** - Modern cross-browser extension framework
+- **[Svelte 5](https://svelte.dev/)** - Reactive UI framework with runes API
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+- **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Vite](https://vitejs.dev/)** - Fast build tool
 
 ## Project Structure
 
@@ -205,9 +205,9 @@ smart-clippy/
 
 ## Browser Support
 
--   Chrome/Chromium: Version 88+
--   Firefox: Version 109+
--   Edge: Version 88+
+- Chrome/Chromium: Version 88+
+- Firefox: Version 109+
+- Edge: Version 88+
 
 ## License
 
@@ -217,7 +217,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 **Guido Dinello**
 
--   GitHub: [@guidodinello](https://github.com/guidodinello)
+- GitHub: [@guidodinello](https://github.com/guidodinello)
 
 ## Contributing
 
@@ -227,12 +227,12 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ### Version 2.0.0
 
--   Complete rewrite using modern stack (WXT, Svelte 5, TypeScript, Tailwind CSS 4)
--   Improved UI with Svelte components
--   Enhanced type safety with TypeScript
--   Better cross-browser support
--   Modernized build system
+- Complete rewrite using modern stack (WXT, Svelte 5, TypeScript, Tailwind CSS 4)
+- Improved UI with Svelte components
+- Enhanced type safety with TypeScript
+- Better cross-browser support
+- Modernized build system
 
 ### Version 1.0.0
 
--   Initial release with basic clipboard functionality
+- Initial release with basic clipboard functionality

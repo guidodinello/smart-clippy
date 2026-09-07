@@ -8,13 +8,13 @@ This document outlines codebase patterns, standards, and conventions for working
 
 Follow conventional branch naming patterns:
 
--   `feat/feature-name` - New features
--   `fix/bug-description` - Bug fixes
--   `docs/documentation-change` - Documentation updates
--   `refactor/refactor-description` - Code refactoring
--   `style/style-change` - Code style changes
--   `test/test-description` - Test additions or changes
--   `chore/chore-description` - Build process or auxiliary tool changes
+- `feat/feature-name` - New features
+- `fix/bug-description` - Bug fixes
+- `docs/documentation-change` - Documentation updates
+- `refactor/refactor-description` - Code refactoring
+- `style/style-change` - Code style changes
+- `test/test-description` - Test additions or changes
+- `chore/chore-description` - Build process or auxiliary tool changes
 
 **Always create a new branch from `main` before starting work.**
 
@@ -28,13 +28,13 @@ Follow conventional branch naming patterns:
 
 **Types:**
 
--   `feat` - New feature
--   `fix` - Bug fix
--   `docs` - Documentation changes
--   `style` - Code style changes (formatting, missing semicolons, etc.)
--   `refactor` - Code refactoring
--   `test` - Adding or updating tests
--   `chore` - Build process, dependencies, or tooling changes
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation changes
+- `style` - Code style changes (formatting, missing semicolons, etc.)
+- `refactor` - Code refactoring
+- `test` - Adding or updating tests
+- `chore` - Build process, dependencies, or tooling changes
 
 **Examples:**
 
@@ -51,14 +51,14 @@ The project uses Husky for Git hooks:
 
 **Pre-commit:**
 
--   Runs `lint-staged` which:
-    -   Formats and lints `.js`, `.ts`, `.svelte` files with Prettier and ESLint
-    -   Formats `.json`, `.md`, `.css`, `.html` files with Prettier
+- Runs `lint-staged` which:
+    - Formats and lints `.js`, `.ts`, `.svelte` files with Prettier and ESLint
+    - Formats `.json`, `.md`, `.css`, `.html` files with Prettier
 
 **Pre-push:**
 
--   Runs `pnpm check` (svelte-check for type checking)
--   Runs `pnpm build` (ensures the project builds successfully)
+- Runs `pnpm check` (svelte-check for type checking)
+- Runs `pnpm build` (ensures the project builds successfully)
 
 **Important:** Never bypass hooks unless absolutely necessary. If hooks fail, fix the issues before committing or pushing.
 
@@ -90,18 +90,18 @@ src/
 
 ### File Naming Conventions
 
--   **Components:** PascalCase (e.g., `Toast.svelte`, `ErrorDisplay.svelte`)
--   **Utilities:** kebab-case (e.g., `logger.ts`, `format.ts`, `toast.ts`)
--   **Types:** kebab-case (e.g., `format.ts`, `toast.ts`)
+- **Components:** PascalCase (e.g., `Toast.svelte`, `ErrorDisplay.svelte`)
+- **Utilities:** kebab-case (e.g., `logger.ts`, `format.ts`, `toast.ts`)
+- **Types:** kebab-case (e.g., `format.ts`, `toast.ts`)
 
 ## Coding Standards
 
 ### TypeScript
 
--   Use TypeScript for all new files
--   Define explicit types for function parameters and return values
--   Use `interface` for object shapes, `type` for unions/intersections
--   Leverage `satisfies` for type checking without widening
+- Use TypeScript for all new files
+- Define explicit types for function parameters and return values
+- Use `interface` for object shapes, `type` for unions/intersections
+- Leverage `satisfies` for type checking without widening
 
 **Example:**
 
@@ -114,16 +114,16 @@ const pageInfo = {
 
 ### Svelte 5 (Runes API)
 
--   Use Svelte 5's new runes API (`$state`, `$derived`, `$effect`)
--   For compositions, use `.svelte.ts` files
--   Keep components focused and single-responsibility
+- Use Svelte 5's new runes API (`$state`, `$derived`, `$effect`)
+- For compositions, use `.svelte.ts` files
+- Keep components focused and single-responsibility
 
 ### State Management
 
--   Use Svelte stores for global state
--   Browser storage sync happens through stores
--   Storage change listeners enable cross-tab sync
--   Always handle loading and error states
+- Use Svelte stores for global state
+- Browser storage sync happens through stores
+- Storage change listeners enable cross-tab sync
+- Always handle loading and error states
 
 **Store pattern:**
 
@@ -137,16 +137,16 @@ interface StoreState {
 
 ### Styling
 
--   Use Tailwind CSS 4 for styling
--   Follow utility-first approach
--   Prefer Tailwind utilities over custom CSS
--   Use `@/lib/utils/cn.ts` for conditional class names
+- Use Tailwind CSS 4 for styling
+- Follow utility-first approach
+- Prefer Tailwind utilities over custom CSS
+- Use `@/lib/utils/cn.ts` for conditional class names
 
 ### Logging
 
--   Use the centralized logger from `@/lib/utils/logger.ts`
--   Log levels: `debug`, `info`, `warn`, `error`
--   Include context in log messages
+- Use the centralized logger from `@/lib/utils/logger.ts`
+- Log levels: `debug`, `info`, `warn`, `error`
+- Include context in log messages
 
 **Example:**
 
@@ -157,24 +157,24 @@ logger.error("Failed to copy to clipboard", err);
 
 ### Error Handling
 
--   Always handle errors in async operations
--   Provide user-friendly error messages
--   Update store error state for UI feedback
--   Log errors with appropriate context
+- Always handle errors in async operations
+- Provide user-friendly error messages
+- Update store error state for UI feedback
+- Log errors with appropriate context
 
 ### Browser Extension Patterns
 
 **Storage:**
 
--   Always use `wxt/storage` (not `browser.storage` directly) — it provides key namespacing, typed getters, and a `watch()` API
--   Use `sync:` prefix for cross-device sync, `local:` for device-local data
--   Define storage keys in `constants.ts`
+- Always use `wxt/storage` (not `browser.storage` directly) — it provides key namespacing, typed getters, and a `watch()` API
+- Use `sync:` prefix for cross-device sync, `local:` for device-local data
+- Define storage keys in `constants.ts`
 
 **Content Scripts:**
 
--   Wait for DOM elements before manipulation
--   Use debouncing for URL change handlers
--   Clean up listeners on component destroy
+- Wait for DOM elements before manipulation
+- Use debouncing for URL change handlers
+- Clean up listeners on component destroy
 
 ## Testing
 
@@ -213,14 +213,14 @@ pnpm fix              # Run lint:fix, format, and check
 
 ## Documentation
 
--   Add JSDoc comments for public APIs and complex functions
--   Keep README.md concise and user-focused
--   Update documentation when changing behavior
--   Use inline comments sparingly, prefer self-documenting code
+- Add JSDoc comments for public APIs and complex functions
+- Keep README.md concise and user-focused
+- Update documentation when changing behavior
+- Use inline comments sparingly, prefer self-documenting code
 
 ## Dependencies
 
--   Prefer `pnpm` as the package manager
--   Keep dependencies up to date
--   Review dependency changes carefully
--   Use exact versions for critical dependencies
+- Prefer `pnpm` as the package manager
+- Keep dependencies up to date
+- Review dependency changes carefully
+- Use exact versions for critical dependencies
