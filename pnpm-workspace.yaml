@@ -1,2 +1,7 @@
 overrides:
     tar: ">=7.5.21 <8.0.0"
+    "brace-expansion@<2": ">=1.1.21 <2"
+    "brace-expansion@>=5 <6": ">=5.0.12 <6"
+    "postcss-selector-parser@<7": ">=7.1.6 <8"
+    "source-map-js@<1.2.2": ">=1.2.2 <2"
+    "devalue@<5.9.3": ">=5.9.3 <6"
